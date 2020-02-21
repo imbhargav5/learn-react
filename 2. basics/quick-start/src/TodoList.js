@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
 class Todo extends Component {
     modifyTodo = (event) => {
-        this.props.onChangeRequest("Genisys Training")
+        //this.props.onChangeRequest(event, "Genisys Training")
     }
     render() {
-        const { text, onDeleteRequest } = this.props
+        const { text, onDeleteRequest, onChangeRequest } = this.props
         return <div>
             <p>{text}</p>
             <button onClick={this.modifyTodo}>Modify Todo</button>
@@ -15,23 +15,45 @@ class Todo extends Component {
 }
 
 
-class TodoList extends Component {
-    state = {
-        todo: "Genisys"
+// class TodoList extends Component {
+//     state = {
+//         todos: ["Genisys", "Training", "Bhargav"]
+//     }
+//     onDeleteRequest = () => {
+//         //this.setState({ todo: null })
+//     }
+//     onChangeRequest = (event, value) => {
+//         // console.log({ value })
+//         //this.setState({ todo: value })
+//     }
+//     render() {
+//         const elements = this.state.todos.map(todoItem => <Todo key={todoItem} text={todoItem}></Todo>)
+//         return <div>
+//             {elements}
+//         </div>
+//         // return <Todo
+//         //     onChangeRequest={this.onChangeRequest}
+//         //     onDeleteRequest={this.onDeleteRequest}
+//         //     text={this.state.todo} ></Todo>
+//     }
+// }
+
+function TodoList() {
+    const [todos, setTodos] = useState(["Genisys", "Training", "Bhargav"])
+    const [name, setName] = useState("Todos with hooks")
+
+    const elements = todos.map(todoItem =>
+        <Todo key={todoItem} text={todoItem}></Todo>)
+
+    function clearTodos() {
+        setTodos([])
     }
-    onDeleteRequest = (event) => {
-        console.log(event)
-        this.setState({ todo: null })
-    }
-    onChangeRequest = (value) => {
-        this.setState({ todo: value })
-    }
-    render() {
-        return <Todo
-            onChangeRequest={this.onChangeRequest}
-            onDeleteRequest={this.onDeleteRequest}
-            text={this.state.todo} ></Todo>
-    }
+
+    return <div>
+        <h3>{name}</h3>
+        {elements}
+        <button onClick={clearTodos}>Clear todos</button>
+    </div>
 }
 
 export default TodoList;
