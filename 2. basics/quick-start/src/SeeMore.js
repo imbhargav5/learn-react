@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 
 
 /// <SeeMore heading={""} content={""}> </SeeMore>
@@ -15,16 +15,6 @@ class SeeMore extends Component {
     state = {
         isContentVisible: false
     }
-    // handleSeeMore = () => {
-    //     this.setState({
-    //         isContentVisible: true
-    //     })
-    // }
-    // handleSeeLess = () => {
-    //     this.setState({
-    //         isContentVisible: false
-    //     })
-    // }
     toggleContentVisibility = () => {
         // this.state.isContentVisible ? this.handleSeeLess() : this.handleSeeMore()
         this.setState({
@@ -40,6 +30,21 @@ class SeeMore extends Component {
             <p>{isContentVisible ? content : null}</p>
         </div>
     }
+}
+
+export function SeeMoreHooks(props) {
+    const { heading, content } = props
+    const [isContentVisible, setIsContentVisible] = useState(false)
+
+
+    function toggleContentVisibility() {
+        setIsContentVisible(!isContentVisible)
+    }
+    return <div>
+        <h3>{heading}</h3>
+        <span onClick={toggleContentVisibility}>{isContentVisible ? "See Less" : "See More"}</span>
+        <p>{isContentVisible ? content : null}</p>
+    </div>
 }
 
 export default SeeMore;

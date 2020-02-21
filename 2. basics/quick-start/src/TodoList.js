@@ -41,8 +41,10 @@ class Todo extends Component {
 function TodoList() {
     const [todos, setTodos] = useState(["Genisys", "Training", "Bhargav"])
     const [name, setName] = useState("Todos with hooks")
+    const [text, setText] = useState("")
 
-    const elements = todos.map(todoItem =>
+
+    const elements = todos.filter(todo => todo.includes(text)).map(todoItem =>
         <Todo key={todoItem} text={todoItem}></Todo>)
 
     function clearTodos() {
@@ -50,6 +52,11 @@ function TodoList() {
     }
 
     return <div>
+        <h1>Add a todo</h1>
+        <input value={text} onChange={(event) => {
+            console.log(event.target.value)
+            setText(event.target.value)
+        }} type="text" />
         <h3>{name}</h3>
         {elements}
         <button onClick={clearTodos}>Clear todos</button>
