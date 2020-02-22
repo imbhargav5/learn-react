@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import store from './Redux'
+import store, { history } from './Redux'
+import { Provider } from 'react-redux'
+import Details from './Details'
+import Counter from './Counter'
+import { Link, Route } from 'react-router-dom'
+import User from './User'
+import { ConnectedRouter } from 'connected-react-router'
 
 window.store = store;
 
@@ -31,14 +37,6 @@ function Component2() {
   return <Recipient />
 }
 
-// function Recipient() {
-//   return <MyDataContext.Consumer>
-//     {(value) => {
-//       return <p>Data from source via context is -- {value}</p>
-//     }}
-//   </MyDataContext.Consumer>
-// }
-
 function Recipient() {
   const data = useMyData()
   return <p>Data from source via context is -- {data}</p>
@@ -49,8 +47,33 @@ function Recipient2() {
   return <p> Recipient 2 got data from source -- {data}</p>
 }
 
+function Navigation() {
+  return <div>
+    <Link to="/">Home</Link>
+    <Link to="/counter">Counter</Link>
+    <Link to="/details">Details</Link>
+  </div>
+}
+
 function App() {
-  return <Source />
+  return <Provider store={store}>
+    <ConnectedRouter history={history}>
+      {/* <Source /> */}
+      <Navigation />
+      <Route path="/">
+        <p>Welcome!</p>
+      </Route>
+      <Route path="/counter">
+        <Counter />
+      </Route>
+      <Route path="/details">
+        <Details />
+      </Route>
+      <Route path="/user/:username">
+        <User />
+      </Route>
+    </ConnectedRouter>
+  </Provider>
 }
 
 export default App;
