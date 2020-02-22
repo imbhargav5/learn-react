@@ -1,6 +1,7 @@
 import React, { useState, Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import { loadPokedex } from './action-creators'
 
 function Pokemon(props) {
     const { pokemonName, pokemonIndex } = props;
@@ -40,27 +41,8 @@ class PokeApiFetcher extends Component {
         //     })
         // }
         const { dispatch } = this.props;
-        dispatch({
-            type: "POKEMONLIST_LOADING"
-        })
-        fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
-            .then(response => response.json())
-            .then(jsonResponse => {
-                //localStorage.setItem("pokedex", JSON.stringify(jsonResponse))
-                // this.setState({
-                //     results: jsonResponse.results,
-                //     loaded: true
-                // })
+        dispatch(loadPokedex());
 
-                dispatch({
-                    type: "POKEMONLIST_LOADED",
-                    payload: {
-                        pokemonList: jsonResponse.results,
-                        loaded: true
-                    }
-                })
-
-            })
     }
     render() {
         const { pokedex } = this.props;

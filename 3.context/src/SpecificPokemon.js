@@ -7,7 +7,6 @@ class SpecificPokemon extends Component {
         loaded: false
     }
     componentDidMount() {
-        const pokemonName = this.props.match.params.pokemonName;
         const pokemonIndex = this.props.match.params.pokemonIndex;
         setTimeout(() => {
             fetch("https://pokeapi.co/api/v2/pokemon-species/" + pokemonIndex)
