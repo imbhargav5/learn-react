@@ -9,6 +9,7 @@ import { Link, Route } from 'react-router-dom'
 import User from './User'
 import Pokedex from './Pokedex'
 import { ConnectedRouter } from 'connected-react-router'
+import Home from './Home'
 
 window.store = store;
 
@@ -62,8 +63,8 @@ function App() {
     <ConnectedRouter history={history}>
       {/* <Source /> */}
       <Navigation />
-      <Route path="/">
-        <p>Welcome</p>
+      <Route path="/" exact>
+        <Home />
       </Route>
       <Route path="/counter">
         <Counter />
