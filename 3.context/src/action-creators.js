@@ -18,7 +18,7 @@ export function loadPokedex() {
         fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
             .then(response => response.json())
             .then(jsonResponse => {
-                //localStorage.setItem("pokedex", JSON.stringify(jsonResponse))
+                //localStorage.setItem(" pokedex", JSON.stringify(jsonResponse))
                 // this.setState({
                 //     results: jsonResponse.results,
                 //     loaded: true

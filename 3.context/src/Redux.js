@@ -53,10 +53,24 @@ function pokedexReducer(state = {
     return state;
 }
 
+// state.bulbasaur = {..}
+// state.charmander = {..}
+function specificPokemonReducer(state = {}, action) {
+    if (action.type == "SPECIFIC_POKEMON_LOADED") {
+        const { pokemonName, data } = action.payload
+        return Object.assign({}, state, {
+            [pokemonName]: data
+        })
+    }
+    return state
+}
+
 const detailsReducer = combineReducers({
     name: nameReducer,
     email: emailReducer
 })
+
+
 
 
 
@@ -65,6 +79,7 @@ const createReducer = (history) => {
         counter: counterReducer,
         details: detailsReducer,
         pokedex: pokedexReducer,
+        specificPokemon: specificPokemonReducer,
         router: connectRouter(history)
     })
     return reducer
@@ -73,7 +88,36 @@ const createReducer = (history) => {
 
 export const history = createBrowserHistory()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(createReducer(history), composeEnhancers(applyMiddleware(loggerMiddleware, thunk)));
 
+function loadState() {
+    try {
+        const value = localStorage.getItem("reduxState");
+        if (!value) {
+            return undefined
+        } else {
+            return JSON.parse(value);
+        }
+    } catch (err) {
+        return undefined;
+    }
+}
+
+
+function saveState(state) {
+    try {
+        localStorage.setItem("reduxState", JSON.stringify(state));
+    } catch (err) {
+        return undefined;
+    }
+}
+
+
+
+
+const persistedState = loadState();
+const store = createStore(createReducer(history), persistedState, composeEnhancers(applyMiddleware(loggerMiddleware, thunk)));
+store.subscribe(() => {
+    saveState(store.getState())
+})
 
 export default store

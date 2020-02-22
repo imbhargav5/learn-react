@@ -1,40 +1,51 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 
 class SpecificPokemon extends Component {
-    state = {
-        data: null,
-        loaded: false
-    }
     componentDidMount() {
         const pokemonIndex = this.props.match.params.pokemonIndex;
-        setTimeout(() => {
-            fetch("https://pokeapi.co/api/v2/pokemon-species/" + pokemonIndex)
-                .then(response => response.json())
-                .then(jsonReponse => {
-                    this.setState({
-                        data: jsonReponse,
-                        loaded: true
-                    })
+        const pokemonName = this.props.match.params.pokemonName;
+
+        const { dispatch } = this.props;
+        fetch("https://pokeapi.co/api/v2/pokemon-species/" + pokemonIndex)
+            .then(response => response.json())
+            .then(jsonReponse => {
+                dispatch({
+                    type: "SPECIFIC_POKEMON_LOADED",
+                    payload: {
+                        pokemonName: pokemonName,
+                        data: jsonReponse
+                    }
                 })
-        }, 3000)
+            })
     }
     render() {
         const pokemonName = this.props.match.params.pokemonName;
-        if (!this.state.loaded) {
+        const { specificPokemon } = this.props;
+        const dataForPokemon = specificPokemon[pokemonName];
+        if (dataForPokemon) {
+            return (
+                <div>
+                    <h1>{pokemonName}</h1>
+                    <h3>Stats</h3>
+                    <ol>
+                        <li>Base happiness : {dataForPokemon.base_happiness}</li>
+                        <li>Capture Rate : {dataForPokemon.capture_rate}</li>
+                    </ol>
+                </div>
+            );
+        } else {
             return null;
         }
-        return (
-            <div>
-                <h1>{pokemonName}</h1>
-                <h3>Stats</h3>
-                <ol>
-                    <li>Base happiness : {this.state.data.base_happiness}</li>
-                    <li>Capture Rate : {this.state.data.capture_rate}</li>
-                </ol>
-            </div>
-        );
+
     }
 }
 
-export default withRouter(SpecificPokemon);
+function mapStateToProps(state) {
+    return {
+        specificPokemon: state.specificPokemon
+    }
+}
+
+export default connect(mapStateToProps)(withRouter(SpecificPokemon));
