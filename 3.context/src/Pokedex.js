@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-const results = [{
-    name: "bulbasaur"
-}];
+import React, { useState, Component } from 'react';
 
 function Pokemon(props) {
     const { pokemonName, pokemonIndex } = props;
@@ -11,17 +8,9 @@ function Pokemon(props) {
 }
 
 
-const pokemonNames = results.map(obj => obj.name);
-const pokemonNameIndexMap = {}
 
-pokemonNames.forEach((pokemonName, index) => {
-    pokemonNameIndexMap[pokemonName] = index + 1
-})
-
-
-function Pokedex() {
-
-
+function Pokedex(props) {
+    const { pokemonNames, pokemonNameIndexMap } = props
     const [value, setValue] = useState("");
     const filteredPokemonNames = pokemonNames.filter(pokemonName => pokemonName.includes(value))
     const elements = filteredPokemonNames.map((pokemonName, index) => <Pokemon key={pokemonName} pokemonIndex={pokemonNameIndexMap[pokemonName]} pokemonName={pokemonName} />)
@@ -36,4 +25,41 @@ function Pokedex() {
     </div>
 }
 
-export default Pokedex;
+class PokeApiFetcher extends Component {
+    state = {
+        results: [],
+        loaded: false,
+    }
+    componentDidMount() {
+        setTimeout(() => {
+            fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+                .then(response => response.json())
+                .then(jsonResponse => {
+                    this.setState({
+                        results: jsonResponse.results,
+                        loaded: true
+                    })
+                })
+        }, 3000)
+    }
+    render() {
+        const pokemonNames = this.state.results.map(obj => obj.name);
+        const pokemonNameIndexMap = {}
+
+        pokemonNames.forEach((pokemonName, index) => {
+            pokemonNameIndexMap[pokemonName] = index + 1
+        })
+
+        if (this.state.loaded) {
+            return <Pokedex pokemonNames={pokemonNames}
+                pokemonNameIndexMap={pokemonNameIndexMap} >
+
+            </Pokedex>
+        } else {
+            return <p> .... Loading ...</p>
+        }
+    }
+}
+
+
+export default PokeApiFetcher;
