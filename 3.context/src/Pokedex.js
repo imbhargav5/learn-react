@@ -1,4 +1,5 @@
 import React, { useState, Component } from 'react';
+import { connect } from 'react-redux'
 
 function Pokemon(props) {
     const { pokemonName, pokemonIndex } = props;
@@ -26,10 +27,6 @@ function Pokedex(props) {
 }
 
 class PokeApiFetcher extends Component {
-    state = {
-        results: [],
-        loaded: false,
-    }
     componentDidMount() {
         // const pokedexResponse = localStorage.getItem("pokedex");
         // if (pokedexResponse) {
@@ -38,27 +35,42 @@ class PokeApiFetcher extends Component {
         //         loaded: true
         //     })
         // }
+        const { dispatch } = this.props;
+        dispatch({
+            type: "POKEMONLIST_LOADING"
+        })
         setTimeout(() => {
             fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
                 .then(response => response.json())
                 .then(jsonResponse => {
                     //localStorage.setItem("pokedex", JSON.stringify(jsonResponse))
-                    this.setState({
-                        results: jsonResponse.results,
-                        loaded: true
+                    // this.setState({
+                    //     results: jsonResponse.results,
+                    //     loaded: true
+                    // })
+
+                    dispatch({
+                        type: "POKEMONLIST_LOADED",
+                        payload: {
+                            pokemonList: jsonResponse.results,
+                            loaded: true
+                        }
                     })
+
                 })
         }, 3000)
     }
     render() {
-        const pokemonNames = this.state.results.map(obj => obj.name);
+        const { pokedex } = this.props;
+        const { pokemonList, loaded } = pokedex;
+        const pokemonNames = pokemonList.map(obj => obj.name);
         const pokemonNameIndexMap = {}
 
         pokemonNames.forEach((pokemonName, index) => {
             pokemonNameIndexMap[pokemonName] = index + 1
         })
 
-        if (this.state.loaded) {
+        if (loaded) {
             return <Pokedex pokemonNames={pokemonNames}
                 pokemonNameIndexMap={pokemonNameIndexMap} >
 
@@ -69,5 +81,11 @@ class PokeApiFetcher extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        pokedex: state.pokedex
+    }
+}
 
-export default PokeApiFetcher;
+
+export default connect(mapStateToProps)(PokeApiFetcher);

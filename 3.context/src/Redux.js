@@ -37,6 +37,20 @@ function emailReducer(state = "imbhargav5@gmail.com", action) {
     return state
 }
 
+function pokedexReducer(state = {
+    pokemonList: [],
+    loaded: false
+}, action) {
+    if (action.type === "POKEMONLIST_LOADED") {
+        const { pokemonList, loaded } = action.payload;
+        return {
+            pokemonList,
+            loaded
+        }
+    }
+    return state;
+}
+
 const detailsReducer = combineReducers({
     name: nameReducer,
     email: emailReducer
@@ -48,6 +62,7 @@ const createReducer = (history) => {
     const reducer = combineReducers({
         counter: counterReducer,
         details: detailsReducer,
+        pokedex: pokedexReducer,
         router: connectRouter(history)
     })
     return reducer
