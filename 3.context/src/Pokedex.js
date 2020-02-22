@@ -1,10 +1,14 @@
 import React, { useState, Component } from 'react';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 function Pokemon(props) {
     const { pokemonName, pokemonIndex } = props;
     return <li>
-        <img style={{ "height": 60, "width": 60 }} src={"/sprites/" + pokemonIndex + ".png"} /><span>{pokemonName}</span>
+        <img style={{ "height": 60, "width": 60 }} src={"/sprites/" + pokemonIndex + ".png"} />
+        <span><Link to={`/pokedex/${pokemonName}/${pokemonIndex}`}>
+            {pokemonName}
+        </Link></span>
     </li>
 }
 
@@ -39,26 +43,24 @@ class PokeApiFetcher extends Component {
         dispatch({
             type: "POKEMONLIST_LOADING"
         })
-        setTimeout(() => {
-            fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
-                .then(response => response.json())
-                .then(jsonResponse => {
-                    //localStorage.setItem("pokedex", JSON.stringify(jsonResponse))
-                    // this.setState({
-                    //     results: jsonResponse.results,
-                    //     loaded: true
-                    // })
+        fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+            .then(response => response.json())
+            .then(jsonResponse => {
+                //localStorage.setItem("pokedex", JSON.stringify(jsonResponse))
+                // this.setState({
+                //     results: jsonResponse.results,
+                //     loaded: true
+                // })
 
-                    dispatch({
-                        type: "POKEMONLIST_LOADED",
-                        payload: {
-                            pokemonList: jsonResponse.results,
-                            loaded: true
-                        }
-                    })
-
+                dispatch({
+                    type: "POKEMONLIST_LOADED",
+                    payload: {
+                        pokemonList: jsonResponse.results,
+                        loaded: true
+                    }
                 })
-        }, 3000)
+
+            })
     }
     render() {
         const { pokedex } = this.props;

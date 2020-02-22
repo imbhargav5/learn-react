@@ -10,6 +10,7 @@ import User from './User'
 import Pokedex from './Pokedex'
 import { ConnectedRouter } from 'connected-react-router'
 import Home from './Home'
+import SpecificPokemon from './SpecificPokemon'
 
 window.store = store;
 
@@ -75,8 +76,11 @@ function App() {
       <Route path="/user/:username">
         <User />
       </Route>
-      <Route path="/pokedex">
+      <Route path="/pokedex" exact>
         <Pokedex />
+      </Route>
+      <Route path="/pokedex/:pokemonName/:pokemonIndex">
+        <SpecificPokemon />
       </Route>
     </ConnectedRouter>
   </Provider>
