@@ -1,6 +1,10 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 
 const INIT_VALUE = 5;
+
+const loggerMiddleware = store => next => action => {
+    console.log("Logger: Action is", { action });
+}
 
 function counterReducer(state = INIT_VALUE, action) {
     if (action.type == "INCREMENT") {
@@ -24,7 +28,7 @@ function nameReducer(state = "Bhargav", action) {
 
 function emailReducer(state = "imbhargav5@gmail.com", action) {
     if (action.type == "EMAIL_CHANGE") {
-        return "something@genisys.com"
+        return action.payload
     }
     return state
 }
@@ -39,7 +43,7 @@ const reducer = combineReducers({
     details: detailsReducer
 })
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(loggerMiddleware));
 
 
 export default store
