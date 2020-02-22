@@ -31,10 +31,18 @@ class PokeApiFetcher extends Component {
         loaded: false,
     }
     componentDidMount() {
+        // const pokedexResponse = localStorage.getItem("pokedex");
+        // if (pokedexResponse) {
+        //     return this.setState({
+        //         results: JSON.parse(pokedexResponse).results,
+        //         loaded: true
+        //     })
+        // }
         setTimeout(() => {
             fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
                 .then(response => response.json())
                 .then(jsonResponse => {
+                    //localStorage.setItem("pokedex", JSON.stringify(jsonResponse))
                     this.setState({
                         results: jsonResponse.results,
                         loaded: true

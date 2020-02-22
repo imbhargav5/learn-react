@@ -53,6 +53,7 @@ function Navigation() {
     <Link to="/">Home</Link>
     <Link to="/counter">Counter</Link>
     <Link to="/details">Details</Link>
+    <Link to="/pokedex">Pokedex</Link>
   </div>
 }
 
@@ -62,7 +63,7 @@ function App() {
       {/* <Source /> */}
       <Navigation />
       <Route path="/">
-        <Pokedex />
+        <p>Welcome</p>
       </Route>
       <Route path="/counter">
         <Counter />
@@ -72,6 +73,9 @@ function App() {
       </Route>
       <Route path="/user/:username">
         <User />
+      </Route>
+      <Route path="/pokedex">
+        <Pokedex />
       </Route>
     </ConnectedRouter>
   </Provider>
