@@ -7,6 +7,7 @@ import Details from './Details'
 import Counter from './Counter'
 import { Link, Route } from 'react-router-dom'
 import User from './User'
+import Pokedex from './Pokedex'
 import { ConnectedRouter } from 'connected-react-router'
 
 window.store = store;
@@ -61,7 +62,7 @@ function App() {
       {/* <Source /> */}
       <Navigation />
       <Route path="/">
-        <p>Welcome!</p>
+        <Pokedex />
       </Route>
       <Route path="/counter">
         <Counter />
