@@ -11,6 +11,7 @@ import Pokedex from './Pokedex'
 import { ConnectedRouter } from 'connected-react-router'
 import Home from './Home'
 import SpecificPokemon from './SpecificPokemon'
+import Forms from './Forms';
 
 window.store = store;
 
@@ -56,6 +57,7 @@ function Navigation() {
     <Link to="/counter">Counter</Link>
     <Link to="/details">Details</Link>
     <Link to="/pokedex">Pokedex</Link>
+    <Link to="/forms">Forms</Link>
   </div>
 }
 
@@ -81,6 +83,9 @@ function App() {
       </Route>
       <Route path="/pokedex/:pokemonName/:pokemonIndex">
         <SpecificPokemon />
+      </Route>
+      <Route path="/forms">
+        <Forms />
       </Route>
     </ConnectedRouter>
   </Provider>
