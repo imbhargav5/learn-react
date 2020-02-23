@@ -5,12 +5,17 @@ import { loadPokedex } from './action-creators'
 
 function Pokemon(props) {
     const { pokemonName, pokemonIndex } = props;
-    return <li>
-        <img style={{ "height": 60, "width": 60 }} src={"/sprites/" + pokemonIndex + ".png"} />
-        <span><Link to={`/pokedex/${pokemonName}/${pokemonIndex}`}>
-            {pokemonName}
-        </Link></span>
-    </li>
+    return <tr>
+        <td>
+            <img style={{ "height": 60, "width": 60 }} src={"/sprites/" + pokemonIndex + ".png"} />
+        </td>
+        <td>
+
+            <span><Link to={`/pokedex/${pokemonName}/${pokemonIndex}`}>
+                {pokemonName}
+            </Link></span>
+        </td>
+    </tr>
 }
 
 
@@ -42,9 +47,13 @@ function Pokedex(props) {
         <input value={value} onChange={(event) => {
             setValue(event.target.value)
         }} />
-        <ul>
+        <table border="1">
+            <thead>
+                <th>Image</th>
+                <th>Name</th>
+            </thead>
             {pagedElements}
-        </ul>
+        </table>
         <button onClick={goToNextPage}>Next</button>
         <button onClick={goToPrevPage}>Prev</button>
         <br />
