@@ -12,6 +12,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import Home from './Home'
 import SpecificPokemon from './SpecificPokemon'
 import Forms from './Forms';
+import Items from './Items';
 
 window.store = store;
 
@@ -58,6 +59,7 @@ function Navigation() {
     <Link to="/details">Details</Link>
     <Link to="/pokedex">Pokedex</Link>
     <Link to="/forms">Forms</Link>
+    <Link to="/items">Items</Link>
   </div>
 }
 
@@ -86,6 +88,9 @@ function App() {
       </Route>
       <Route path="/forms">
         <Forms />
+      </Route>
+      <Route path="/items">
+        <Items />
       </Route>
     </ConnectedRouter>
   </Provider>
