@@ -14,20 +14,42 @@ function Pokemon(props) {
 }
 
 
+const PAGE_LIMIT = 20
+
 
 function Pokedex(props) {
     const { pokemonNames, pokemonNameIndexMap } = props
     const [value, setValue] = useState("");
+    const [pageNumber, setPageNumber] = useState(0)
+
     const filteredPokemonNames = pokemonNames.filter(pokemonName => pokemonName.includes(value))
+
+    function goToNextPage() {
+        setPageNumber(Math.min(pageNumber + 1, pokemonNames.length / PAGE_LIMIT))
+    }
+
+    function goToPrevPage() {
+        setPageNumber(Math.max(0, pageNumber - 1))
+    }
+
+    console.log({ pageNumber })
     const elements = filteredPokemonNames.map((pokemonName, index) => <Pokemon key={pokemonName} pokemonIndex={pokemonNameIndexMap[pokemonName]} pokemonName={pokemonName} />)
+    const startIndex = pageNumber * PAGE_LIMIT
+    const endIndex = startIndex + PAGE_LIMIT
+    const pagedElements = elements.slice(startIndex, endIndex)
     return <div>
         <h1> PokeDex</h1>
         <input value={value} onChange={(event) => {
             setValue(event.target.value)
         }} />
-        <ol>
-            {elements}
-        </ol>
+        <ul>
+            {pagedElements}
+        </ul>
+        <button onClick={goToNextPage}>Next</button>
+        <button onClick={goToPrevPage}>Prev</button>
+        <br />
+        <br /><br />
+        <br />
     </div>
 }
 
